@@ -7,41 +7,42 @@ using System.Net.Http;
 
 namespace SocioPress.Profile
 {
-    public class User
+    public class Profile_Feeds
     {
         #region Fields
         /// <summary>
-        /// Instance of Profile User Data Class.
+        /// Instance of Profile Feeds Class.
         /// </summary>
-        private static User instance;
-        public static User Instance
+        private static Profile_Feeds instance;
+        public static Profile_Feeds Instance
         {
             get
             {
                 if (instance == null)
-                    instance = new User();
+                    instance = new Profile_Feeds();
                 return instance;
             }
         }
         #endregion
         #region Constructor
         /// <summary>
-        /// Web service for communication for our Backend.
+        /// Web service for communication to our Backend.
         /// </summary>
         HttpClient client;
-        public User()
+        public Profile_Feeds()
         {
             client = new HttpClient();
         }
         #endregion
-        #region Method
+        #region Methods
         public async void GetData(string wp_id, string session_key, Action<bool, string> callback)
         {
-            string getRequest = "?";
-            getRequest += "wpid" + wp_id;
-            getRequest += "&snky" + session_key;
+            var dict = new Dictionary<string, string>();
+                dict.Add("wpid", wp_id);
+                dict.Add("snky", session_key);
+            var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.GetAsync(BaseClass.BaseDomainUrl + "/sociopress/api/v1/user/profile" + getRequest);
+            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/sociopress/v1/user/feeds", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)

@@ -7,45 +7,42 @@ using System.Net.Http;
 
 namespace SocioPress.Profile
 {
-    public class UF_Status
+    public class Home_Feeds
     {
         #region Fields
         /// <summary>
-        /// Instance of User Feed Type of Status Class.
+        /// Instance of Home Feeds Class.
         /// </summary>
-        private static UF_Status instance;
-        public static UF_Status Instance
+        private static Home_Feeds instance;
+        public static Home_Feeds Instance
         {
             get
             {
                 if (instance == null)
-                    instance = new UF_Status();
+                    instance = new Home_Feeds();
                 return instance;
             }
         }
         #endregion
         #region Constructor
         /// <summary>
-        /// Web service for communication for our Backend.
+        /// Web service for communication to our Backend.
         /// </summary>
         HttpClient client;
-        public UF_Status()
+        public Home_Feeds()
         {
             client = new HttpClient();
         }
         #endregion
-        #region Method
-        public async void Submit(string wp_id, string session_key, string title, string info, string style, Action<bool, string> callback)
+        #region Methods
+        public async void GetData(string wp_id, string session_key, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
                 dict.Add("wpid", wp_id);
                 dict.Add("snky", session_key);
-                dict.Add("title", title);
-                dict.Add("info", info);
-                dict.Add("style", style);
             var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/datavice/api/v1/feed/status", content);
+            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/sociopress/v1/home/feed", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)

@@ -7,41 +7,45 @@ using System.Net.Http;
 
 namespace SocioPress.Profile
 {
-    public class Feeds
+    public class User_Status
     {
         #region Fields
         /// <summary>
-        /// Instance of Profile Feeds Class.
+        /// Instance of User Feed Type of Status Class.
         /// </summary>
-        private static Feeds instance;
-        public static Feeds Instance
+        private static User_Status instance;
+        public static User_Status Instance
         {
             get
             {
                 if (instance == null)
-                    instance = new Feeds();
+                    instance = new User_Status();
                 return instance;
             }
         }
         #endregion
         #region Constructor
         /// <summary>
-        /// Web service for communication for our Backend.
+        /// Web service for communication to our Backend.
         /// </summary>
         HttpClient client;
-        public Feeds()
+        public User_Status()
         {
             client = new HttpClient();
         }
         #endregion
-        #region Method
-        public async void GetData(string wp_id, string session_key, Action<bool, string> callback)
+        #region Methods
+        public async void Submit(string wp_id, string session_key, string title, string info, string style, Action<bool, string> callback)
         {
-            string getRequest = "?";
-            getRequest += "wpid" + wp_id;
-            getRequest += "&snky" + session_key;
+            var dict = new Dictionary<string, string>();
+                dict.Add("wpid", wp_id);
+                dict.Add("snky", session_key);
+                dict.Add("title", title);
+                dict.Add("info", info);
+                dict.Add("style", style);
+            var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.GetAsync(BaseClass.BaseDomainUrl + "/sociopress/api/v1/user/feeds" + getRequest);
+            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/sociopress/v1/feed/status", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)
