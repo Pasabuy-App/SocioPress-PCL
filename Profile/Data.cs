@@ -7,19 +7,19 @@ using System.Net.Http;
 
 namespace SocioPress.Profile
 {
-    public class Profile_Feeds
+    public class Data
     {
         #region Fields
         /// <summary>
-        /// Instance of Profile Feeds Class.
+        /// Instance of Profile User Data Class.
         /// </summary>
-        private static Profile_Feeds instance;
-        public static Profile_Feeds Instance
+        private static Data instance;
+        public static Data Instance
         {
             get
             {
                 if (instance == null)
-                    instance = new Profile_Feeds();
+                    instance = new Data();
                 return instance;
             }
         }
@@ -29,20 +29,20 @@ namespace SocioPress.Profile
         /// Web service for communication to our Backend.
         /// </summary>
         HttpClient client;
-        public Profile_Feeds()
+        public Data()
         {
             client = new HttpClient();
         }
         #endregion
         #region Methods
-        public async void GetData(string wp_id, string session_key, Action<bool, string> callback)
+        public async void Get(string wp_id, string session_key, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
                 dict.Add("wpid", wp_id);
                 dict.Add("snky", session_key);
             var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/sociopress/v1/user/feeds", content);
+            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/sociopress/v1/profile/data", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)
