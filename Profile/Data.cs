@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
-using SocioPress.Profile.Struck;
+using SocioPress.Profile.Struct;
 using System.Net.Http;
 
 namespace SocioPress.Profile
