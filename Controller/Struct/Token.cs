@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SocioPress.Profile.Struct
+namespace SocioPress.Controller.Struct
 {
     public class Token
     {
