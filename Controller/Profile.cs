@@ -2,24 +2,24 @@
 using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
-using SocioPress.Profile.Struct;
+using SocioPress.Controller.Struct;
 using System.Net.Http;
 
 namespace SocioPress.Profile
 {
-    public class Data
+    public class Profile
     {
         #region Fields
         /// <summary>
-        /// Instance of Profile User Data Class.
+        /// Instance of Profile Class with get data method.
         /// </summary>
-        private static Data instance;
-        public static Data Instance
+        private static Profile instance;
+        public static Profile Instance
         {
             get
             {
                 if (instance == null)
-                    instance = new Data();
+                    instance = new Profile();
                 return instance;
             }
         }
@@ -29,13 +29,13 @@ namespace SocioPress.Profile
         /// Web service for communication to our Backend.
         /// </summary>
         HttpClient client;
-        public Data()
+        public Profile()
         {
             client = new HttpClient();
         }
         #endregion
-        #region Methods
-        public async void Get(string wp_id, string session_key, Action<bool, string> callback)
+        #region GetData Method
+        public async void GetData(string wp_id, string session_key, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
                 dict.Add("wpid", wp_id);
