@@ -34,7 +34,7 @@ namespace SocioPress.Controller
             client = new HttpClient();
         }
         #endregion
-        #region Methods
+        #region Get Total Transaction Method
         public async void GetTotal(string wp_id, string session_key, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();

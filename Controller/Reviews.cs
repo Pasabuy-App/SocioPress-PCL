@@ -2,24 +2,24 @@
 using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
+using SocioPress.Controller.Struct;
 using System.Net.Http;
-using SocioPress.Profile.Struct;
 
-namespace SocioPress.Reviews
+namespace SocioPress.Controller
 {
-    public class Review
+    public class Reviews
     {
         #region Fields
         /// <summary>
-        /// Instance of Insert Reviews Class.
+        /// Instance of Reviews Class with insert and get reviews method.
         /// </summary>
-        private static Review instance;
-        public static Review Instance
+        private static Reviews instance;
+        public static Reviews Instance
         {
             get
             {
                 if (instance == null)
-                    instance = new Review();
+                    instance = new Reviews();
                 return instance;
             }
         }
@@ -29,12 +29,12 @@ namespace SocioPress.Reviews
         /// Web service for communication to our Backend.
         /// </summary>
         HttpClient client;
-        public Review()
+        public Reviews()
         {
             client = new HttpClient();
         }
         #endregion
-        #region Methods
+        #region Insert Method
         public async void Insert(string wp_id, string session_key, string comment, string mover_id, string rating, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
@@ -46,6 +46,34 @@ namespace SocioPress.Reviews
             var content = new FormUrlEncodedContent(dict);
 
             var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/sociopress/v1/reviews/insert", content);
+            response.EnsureSuccessStatusCode();
+
+            if (response.IsSuccessStatusCode)
+            {
+                string result = await response.Content.ReadAsStringAsync();
+                Token token = JsonConvert.DeserializeObject<Token>(result);
+
+                bool success = token.status == "success" ? true : false;
+                string data = token.status == "success" ? result : token.message;
+                callback(success, data);
+            }
+            else
+            {
+                callback(false, "Network Error! Check your connection.");
+            }
+        }
+        #endregion
+
+        #region Get Reviews Method
+        public async void GetReviews(string wp_id, string session_key, string user_id, Action<bool, string> callback)
+        {
+            var dict = new Dictionary<string, string>();
+            dict.Add("wpid", wp_id);
+            dict.Add("snky", session_key);
+            if (user_id != "") { dict.Add("uid", user_id); }
+            var content = new FormUrlEncodedContent(dict);
+
+            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/sociopress/v1/reviews/user/list", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)
