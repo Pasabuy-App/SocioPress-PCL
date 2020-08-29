@@ -2,24 +2,24 @@
 using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
+using SocioPress.Controller.Struct;
 using System.Net.Http;
-using SocioPress.Profile.Struct;
 
-namespace SocioPress.Transaction
+namespace SocioPress.Controller
 {
-    public class GetTotal
+    public class Transaction
     {
         #region Fields
         /// <summary>
-        /// Instance of Get Total Transaction of User Class.
+        /// Instance of Transaction of User Class with get total of transaction method.
         /// </summary>
-        private static GetTotal instance;
-        public static GetTotal Instance
+        private static Transaction instance;
+        public static Transaction Instance
         {
             get
             {
                 if (instance == null)
-                    instance = new GetTotal();
+                    instance = new Transaction();
                 return instance;
             }
         }
@@ -29,13 +29,13 @@ namespace SocioPress.Transaction
         /// Web service for communication to our Backend.
         /// </summary>
         HttpClient client;
-        public GetTotal()
+        public Transaction()
         {
             client = new HttpClient();
         }
         #endregion
         #region Methods
-        public async void Transaction(string wp_id, string session_key, Action<bool, string> callback)
+        public async void GetTotal(string wp_id, string session_key, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
             dict.Add("wpid", wp_id);
