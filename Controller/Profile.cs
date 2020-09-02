@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Newtonsoft.Json;
-using SocioPress.Controller.Struct;
+using SocioPress.Model;
 using System.Net.Http;
 
-namespace SocioPress.Profile
+namespace SocioPress
 {
     public class Profile
     {
@@ -42,7 +41,7 @@ namespace SocioPress.Profile
                 dict.Add("snky", session_key);
             var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/sociopress/v1/profile/data", content);
+            var response = await client.PostAsync(SPHost.Instance.BaseDomain + "/sociopress/v1/profile/data", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)

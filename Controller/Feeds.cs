@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Newtonsoft.Json;
-using SocioPress.Controller.Struct;
+using SocioPress.Model;
 using System.Net.Http;
 
-namespace SocioPress.Controller
+namespace SocioPress
 {
     public class Feeds
     {
         #region Fields
         /// <summary>
-        /// Instance of Feeds Class with home and profile method
+        /// Instance of Feeds Class with home and profile method.
         /// </summary>
         private static Feeds instance;
         public static Feeds Instance
@@ -24,6 +23,7 @@ namespace SocioPress.Controller
             }
         }
         #endregion
+
         #region Constructor
         /// <summary>
         /// Web service for communication to our Backend.
@@ -39,12 +39,12 @@ namespace SocioPress.Controller
         public async void Home(string wp_id, string session_key, string last_id, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
-            dict.Add("wpid", wp_id);
-            dict.Add("snky", session_key);
-            if (last_id != "") { dict.Add("lid", last_id); }
+                dict.Add("wpid", wp_id);
+                dict.Add("snky", session_key);
+                if (last_id != "") { dict.Add("lid", last_id); }
             var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/sociopress/v1/feeds/home", content);
+            var response = await client.PostAsync(SPHost.Instance.BaseDomain + "/sociopress/v1/feeds/home", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)
@@ -67,12 +67,12 @@ namespace SocioPress.Controller
         public async void Profile(string wp_id, string session_key, string last_id, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
-            dict.Add("wpid", wp_id);
-            dict.Add("snky", session_key);
-            if (last_id != "") { dict.Add("lid", last_id); }
+                dict.Add("wpid", wp_id);
+                dict.Add("snky", session_key);
+                if (last_id != "") { dict.Add("lid", last_id); }
             var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/sociopress/v1/feeds/profile", content);
+            var response = await client.PostAsync(SPHost.Instance.BaseDomain + "/sociopress/v1/feeds/profile", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)

@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Newtonsoft.Json;
-using SocioPress.Controller.Struct;
+using SocioPress.Model;
 using System.Net.Http;
 
-namespace SocioPress.Controller
+namespace SocioPress
 {
     public class Activity
     {
         #region Fields
         /// <summary>
-        /// Instance of Activity Class with insert, listing and open metohd.
+        /// Instance of Activity Class with insert, list and open method.
         /// </summary>
         private static Activity instance;
         public static Activity Instance
@@ -40,15 +39,15 @@ namespace SocioPress.Controller
         public async void Insert(string wp_id, string session_key, string stid, string title, string info, string icon, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
-            dict.Add("wpid", wp_id);
-            dict.Add("snky", session_key);
-            if (stid != "") { dict.Add("stid", stid); }
-            dict.Add("title", title);
-            dict.Add("info", info);
-            dict.Add("icon", icon);
+                dict.Add("wpid", wp_id);
+                dict.Add("snky", session_key);
+                if (stid != "") { dict.Add("stid", stid); }
+                dict.Add("title", title);
+                dict.Add("info", info);
+                dict.Add("icon", icon);
             var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/sociopress/v1/activity/insert", content);
+            var response = await client.PostAsync(SPHost.Instance.BaseDomain + "/sociopress/v1/activity/insert", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)
@@ -67,19 +66,19 @@ namespace SocioPress.Controller
         }
         #endregion
 
-        #region Listing Method
-        public async void Listing(string wp_id, string session_key, string stid, string icon, string open, string lid, Action<bool, string> callback)
+        #region List Method
+        public async void List(string wp_id, string session_key, string stid, string icon, string open, string lid, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
-            dict.Add("wpid", wp_id);
-            dict.Add("snky", session_key);
-            if (stid != "") { dict.Add("stid", stid); }
-            if (icon != "") { dict.Add("icon", icon); }
-            if (open != "") { dict.Add("open", open); }
-            if (lid != "") { dict.Add("lid", lid); }
+                dict.Add("wpid", wp_id);
+                dict.Add("snky", session_key);
+                if (stid != "") { dict.Add("stid", stid); }
+                if (icon != "") { dict.Add("icon", icon); }
+                if (open != "") { dict.Add("open", open); }
+                if (lid != "") { dict.Add("lid", lid); }
             var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/sociopress/v1/activity/list/all", content);
+            var response = await client.PostAsync(SPHost.Instance.BaseDomain + "/sociopress/v1/activity/list/all", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)
@@ -102,13 +101,13 @@ namespace SocioPress.Controller
         public async void Open(string wp_id, string session_key, string atid, string stid, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
-            dict.Add("wpid", wp_id);
-            dict.Add("snky", session_key);
-            dict.Add("atid", atid);
-            dict.Add("stid", stid);
+                dict.Add("wpid", wp_id);
+                dict.Add("snky", session_key);
+                dict.Add("atid", atid);
+                dict.Add("stid", stid);
             var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/sociopress/v1/activity/select", content);
+            var response = await client.PostAsync(SPHost.Instance.BaseDomain + "/sociopress/v1/activity/select", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Newtonsoft.Json;
-using SocioPress.Controller.Struct;
+using SocioPress.Model;
 using System.Net.Http;
 
-namespace SocioPress.Controller
+namespace SocioPress
 {
     public class Message
     {
@@ -40,12 +39,12 @@ namespace SocioPress.Controller
         public async void Delete(string wp_id, string session_key, string mess_id, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
-            dict.Add("wpid", wp_id);
-            dict.Add("snky", session_key);
-            dict.Add("mess_id", mess_id);
+                dict.Add("wpid", wp_id);
+                dict.Add("snky", session_key);
+                dict.Add("mess_id", mess_id);
             var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/sociopress/v1/messages/delete", content);
+            var response = await client.PostAsync(SPHost.Instance.BaseDomain + "/sociopress/v1/messages/delete", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)
@@ -68,13 +67,13 @@ namespace SocioPress.Controller
         public async void Insert(string wp_id, string session_key, string contents, string recepient, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
-            dict.Add("wpid", wp_id);
-            dict.Add("snky", session_key);
-            dict.Add("content", contents);
-            dict.Add("recepient", recepient);
+                dict.Add("wpid", wp_id);
+                dict.Add("snky", session_key);
+                dict.Add("content", contents);
+                dict.Add("recepient", recepient);
             var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/sociopress/v1/messages/insert", content);
+            var response = await client.PostAsync(SPHost.Instance.BaseDomain + "/sociopress/v1/messages/insert", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)
@@ -97,12 +96,12 @@ namespace SocioPress.Controller
         public async void Seen(string wp_id, string session_key, string mess_id, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
-            dict.Add("wpid", wp_id);
-            dict.Add("snky", session_key);
-            dict.Add("mess_id", mess_id);
+                dict.Add("wpid", wp_id);
+                dict.Add("snky", session_key);
+                dict.Add("mess_id", mess_id);
             var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/sociopress/v1/messages/seen", content);
+            var response = await client.PostAsync(SPHost.Instance.BaseDomain + "/sociopress/v1/messages/seen", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)
@@ -125,13 +124,13 @@ namespace SocioPress.Controller
         public async void Update(string wp_id, string session_key, string contents, string mess_id, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
-            dict.Add("wpid", wp_id);
-            dict.Add("snky", session_key);
-            dict.Add("content", contents);
-            dict.Add("mess_id", mess_id);
+                dict.Add("wpid", wp_id);
+                dict.Add("snky", session_key);
+                dict.Add("content", contents);
+                dict.Add("mess_id", mess_id);
             var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/sociopress/v1/messages/update", content);
+            var response = await client.PostAsync(SPHost.Instance.BaseDomain + "/sociopress/v1/messages/update", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)
@@ -154,13 +153,13 @@ namespace SocioPress.Controller
         public async void GetByRecepient(string wp_id, string session_key, string recepient, string last_id, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
-            dict.Add("wpid", wp_id);
-            dict.Add("snky", session_key);
-            dict.Add("recepient", recepient);
-            if (last_id != "")  {  dict.Add("lid", last_id); }
+                dict.Add("wpid", wp_id);
+                dict.Add("snky", session_key);
+                dict.Add("recepient", recepient);
+                if (last_id != "")  {  dict.Add("lid", last_id); }
             var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/sociopress/v1/messages/get/recepient", content);
+            var response = await client.PostAsync(SPHost.Instance.BaseDomain + "/sociopress/v1/messages/get/recepient", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Newtonsoft.Json;
-using SocioPress.Controller.Struct;
+using SocioPress.Model;
 using System.Net.Http;
 
-namespace SocioPress.Controller
+namespace SocioPress
 {
     public class Transaction
     {
@@ -38,11 +37,11 @@ namespace SocioPress.Controller
         public async void GetTotal(string wp_id, string session_key, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
-            dict.Add("wpid", wp_id);
-            dict.Add("snky", session_key);
+                dict.Add("wpid", wp_id);
+                dict.Add("snky", session_key);
             var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/sociopress/v1/transactions/user/list/total", content);
+            var response = await client.PostAsync(SPHost.Instance.BaseDomain + "/sociopress/v1/transactions/user/list/total", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)

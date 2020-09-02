@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Newtonsoft.Json;
-using SocioPress.Controller.Struct;
+using SocioPress.Model;
 using System.Net.Http;
 
-namespace SocioPress.Controller
+namespace SocioPress
 {
     public class Posts
     {
@@ -40,14 +39,14 @@ namespace SocioPress.Controller
         public async void Insert(string wp_id, string session_key, string title, string contents, string type, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
-            dict.Add("wpid", wp_id);
-            dict.Add("snky", session_key);
-            dict.Add("title", title);
-            dict.Add("content", contents);
-            dict.Add("type", type);
+                dict.Add("wpid", wp_id);
+                dict.Add("snky", session_key);
+                dict.Add("title", title);
+                dict.Add("content", contents);
+                dict.Add("type", type);
             var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/sociopress/v1/post/insert", content);
+            var response = await client.PostAsync(SPHost.Instance.BaseDomain + "/sociopress/v1/post/insert", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)
@@ -70,14 +69,14 @@ namespace SocioPress.Controller
         public async void Update(string wp_id, string session_key, string title, string contents, string post_id, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
-            dict.Add("wpid", wp_id);
-            dict.Add("snky", session_key);
-            dict.Add("title", title);
-            dict.Add("content", contents);
-            dict.Add("post_id", post_id);
+                dict.Add("wpid", wp_id);
+                dict.Add("snky", session_key);
+                dict.Add("title", title);
+                dict.Add("content", contents);
+                dict.Add("post_id", post_id);
             var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/sociopress/v1/post/update", content);
+            var response = await client.PostAsync(SPHost.Instance.BaseDomain + "/sociopress/v1/post/update", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)
@@ -100,12 +99,12 @@ namespace SocioPress.Controller
         public async void Delete(string wp_id, string session_key, string post_id, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
-            dict.Add("wpid", wp_id);
-            dict.Add("snky", session_key);
-            dict.Add("post_id", post_id);
+                dict.Add("wpid", wp_id);
+                dict.Add("snky", session_key);
+                dict.Add("post_id", post_id);
             var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/sociopress/v1/post/delete", content);
+            var response = await client.PostAsync(SPHost.Instance.BaseDomain + "/sociopress/v1/post/delete", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)
@@ -128,12 +127,12 @@ namespace SocioPress.Controller
         public async void GetLink(string wp_id, string session_key, string post_id, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
-            dict.Add("wpid", wp_id);
-            dict.Add("snky", session_key);
-            dict.Add("pid", post_id);
+                dict.Add("wpid", wp_id);
+                dict.Add("snky", session_key);
+                dict.Add("pid", post_id);
             var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/sociopress/v1/post/share", content);
+            var response = await client.PostAsync(SPHost.Instance.BaseDomain + "/sociopress/v1/post/share", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)
@@ -156,14 +155,14 @@ namespace SocioPress.Controller
         public async void ShareLink(string wp_id, string session_key, string title, string post_link, string type, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
-            dict.Add("wpid", wp_id);
-            dict.Add("snky", session_key);
-            dict.Add("title", title);
-            dict.Add("post", post_link);
-            dict.Add("type", type);
+                dict.Add("wpid", wp_id);
+                dict.Add("snky", session_key);
+                dict.Add("title", title);
+                dict.Add("post", post_link);
+                dict.Add("type", type);
             var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/sociopress/v1/post/share/insert", content);
+            var response = await client.PostAsync(SPHost.Instance.BaseDomain + "/sociopress/v1/post/share/insert", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)
@@ -186,12 +185,12 @@ namespace SocioPress.Controller
         public async void Count(string wp_id, string session_key, string user_id, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
-            dict.Add("wpid", wp_id);
-            dict.Add("snky", session_key);
-            dict.Add("user_id", user_id);
+                dict.Add("wpid", wp_id);
+                dict.Add("snky", session_key);
+                dict.Add("user_id", user_id);
             var content = new FormUrlEncodedContent(dict);
 
-            var response = await client.PostAsync(BaseClass.BaseDomainUrl + "/sociopress/v1/post/user/count", content);
+            var response = await client.PostAsync(SPHost.Instance.BaseDomain + "/sociopress/v1/post/user/count", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)

@@ -1,18 +1,37 @@
-﻿using System;
-
+﻿
 namespace SocioPress
 {
-    public class BaseClass
+    public class SPHost
     {
-        /// <summary>
-        /// Primary base domain url.
-        /// </summary>
-        public static string BaseDomainUrl
+        private static SPHost instance;
+        public static SPHost Instance
         {
             get
             {
-                return "http://localhost/wordpress/wp-json";
+                if (instance == null)
+                    instance = new SPHost();
+                return instance;
             }
         }
+
+        private bool isInitialized = false;
+        private string baseUrl = "http://localhost";
+        public string BaseDomain
+        {
+            get
+            {
+                return baseUrl + "/wp-json";
+            }
+        }
+
+        public void Initialized(string url)
+        {
+            if (!isInitialized)
+            {
+                baseUrl = url;
+                isInitialized = true;
+            }
+        }
+
     }
 }
