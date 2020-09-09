@@ -15,7 +15,7 @@ namespace SocioPress
         }
 
         private bool isInitialized = false;
-        private string baseUrl = "http://localhost";
+        private string baseUrl = "http://localhost/wordpress";
         public string BaseDomain
         {
             get

@@ -34,11 +34,12 @@ namespace SocioPress
         }
         #endregion
         #region GetData Method
-        public async void GetData(string wp_id, string session_key, Action<bool, string> callback)
+        public async void GetData(string wp_id, string session_key, string user_id, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
                 dict.Add("wpid", wp_id);
                 dict.Add("snky", session_key);
+                if (user_id != "") { dict.Add("user_id", user_id); }
             var content = new FormUrlEncodedContent(dict);
 
             var response = await client.PostAsync(SPHost.Instance.BaseDomain + "/sociopress/v1/profile/data", content);

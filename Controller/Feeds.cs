@@ -64,12 +64,13 @@ namespace SocioPress
         #endregion
 
         #region Profile Method
-        public async void Profile(string wp_id, string session_key, string last_id, Action<bool, string> callback)
+        public async void Profile(string wp_id, string session_key, string last_id, string user_id, Action<bool, string> callback)
         {
             var dict = new Dictionary<string, string>();
                 dict.Add("wpid", wp_id);
                 dict.Add("snky", session_key);
                 if (last_id != "") { dict.Add("lid", last_id); }
+                if (user_id != "") { dict.Add("user_id", user_id); }
             var content = new FormUrlEncodedContent(dict);
 
             var response = await client.PostAsync(SPHost.Instance.BaseDomain + "/sociopress/v1/feeds/profile", content);

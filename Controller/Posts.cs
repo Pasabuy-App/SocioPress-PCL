@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using SocioPress.Model;
 using System.Net.Http;
+using System.IO;
 
 namespace SocioPress
 {
@@ -36,17 +37,36 @@ namespace SocioPress
         #endregion
 
         #region Insert Method
-        public async void Insert(string wp_id, string session_key, string title, string contents, string type, Action<bool, string> callback)
+        public async void Insert(string wpid, string snky, string title, string content, string type, string img,
+            string item_cat, string item_price, string pic_loc, string dp_loc, string vhl_type, Action<bool, string> callback)
         {
-            var dict = new Dictionary<string, string>();
-                dict.Add("wpid", wp_id);
-                dict.Add("snky", session_key);
-                dict.Add("title", title);
-                dict.Add("content", contents);
-                dict.Add("type", type);
-            var content = new FormUrlEncodedContent(dict);
+            var multiForm = new MultipartFormDataContent();
+            multiForm.Add(new StringContent(wpid), "wpid");
+            multiForm.Add(new StringContent(snky), "snky");
+            multiForm.Add(new StringContent(title), "title");
+            multiForm.Add(new StringContent(content), "content");
+            multiForm.Add(new StringContent(type), "type");
+            if (type == "move")
+            {
+                multiForm.Add(new StringContent(vhl_type), "vhl_type");
+                multiForm.Add(new StringContent(pic_loc), "pic_loc");
+                multiForm.Add(new StringContent(dp_loc), "dp_loc");
+            }
+            if (type == "sell")
+            {
+                multiForm.Add(new StringContent(item_cat), "item_cat");
+                multiForm.Add(new StringContent(item_price), "item_price");
+                multiForm.Add(new StringContent(vhl_type), "vhl_type");
+                multiForm.Add(new StringContent(pic_loc), "pic_loc");
+            }
+            if (img != "")
+            {
+                FileStream fs = File.OpenRead(img);
+                multiForm.Add(new StreamContent(fs), "img", Path.GetFileName(img));
+            }
 
-            var response = await client.PostAsync(SPHost.Instance.BaseDomain + "/sociopress/v1/post/insert", content);
+
+            var response = await client.PostAsync(SPHost.Instance.BaseDomain + "/sociopress/v1/post/insert", multiForm);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)
