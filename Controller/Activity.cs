@@ -104,10 +104,37 @@ namespace SocioPress
                 dict.Add("wpid", wp_id);
                 dict.Add("snky", session_key);
                 dict.Add("atid", atid);
-                dict.Add("stid", stid);
+                if (stid != "") { dict.Add("stid", stid); }
             var content = new FormUrlEncodedContent(dict);
 
             var response = await client.PostAsync(SPHost.Instance.BaseDomain + "/sociopress/v1/activity/select", content);
+            response.EnsureSuccessStatusCode();
+
+            if (response.IsSuccessStatusCode)
+            {
+                string result = await response.Content.ReadAsStringAsync();
+                Token token = JsonConvert.DeserializeObject<Token>(result);
+
+                bool success = token.status == "success" ? true : false;
+                string data = token.status == "success" ? result : token.message;
+                callback(success, data);
+            }
+            else
+            {
+                callback(false, "Network Error! Check your connection.");
+            }
+        }
+        #endregion
+
+        #region MarkAllRead Method
+        public async void MarkAll(string wp_id, string session_key, Action<bool, string> callback)
+        {
+            var dict = new Dictionary<string, string>();
+            dict.Add("wpid", wp_id);
+            dict.Add("snky", session_key);
+            var content = new FormUrlEncodedContent(dict);
+
+            var response = await client.PostAsync(SPHost.Instance.BaseDomain + "/sociopress/v1/activity/markall/read", content);
             response.EnsureSuccessStatusCode();
 
             if (response.IsSuccessStatusCode)

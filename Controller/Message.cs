@@ -177,5 +177,33 @@ namespace SocioPress
             }
         }
         #endregion
+
+        #region List Methods
+        public async void List(string wp_id, string session_key, string lastid, Action<bool, string> callback)
+        {
+            var dict = new Dictionary<string, string>();
+                dict.Add("wpid", wp_id);
+                dict.Add("snky", session_key);
+                if (lastid != "") { dict.Add("lid", lastid); }
+            var content = new FormUrlEncodedContent(dict);
+
+            var response = await client.PostAsync(SPHost.Instance.BaseDomain + "/sociopress/v1/messages/list", content);
+            response.EnsureSuccessStatusCode();
+
+            if (response.IsSuccessStatusCode)
+            {
+                string result = await response.Content.ReadAsStringAsync();
+                Token token = JsonConvert.DeserializeObject<Token>(result);
+
+                bool success = token.status == "success" ? true : false;
+                string data = token.status == "success" ? result : token.message;
+                callback(success, data);
+            }
+            else
+            {
+                callback(false, "Network Error! Check your connection.");
+            }
+        }
+        #endregion
     }
 }
